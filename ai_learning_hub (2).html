@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Learning Hub | แหล่งเรียนรู้และเครื่องมือปัญญาประดิษฐ์</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#030712',
+                            card: '#111827',
+                            primary: '#6366f1',
+                            secondary: '#06b6d4',
+                            accent: '#ec4899',
+                            success: '#10b981'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Prompt', 'Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts: Prompt & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Prompt', 'Inter', sans-serif;
+            background-color: #030712;
+            color: #f3f4f6;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #030712;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f2937;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #374151;
+        }
+
+        /* Neon Glow Effect */
+        .neon-glow {
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
+        }
+        .neon-text {
+            text-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+        }
+        
+        /* Card Hover Effects */
+        .hover-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .hover-card:hover {
+            transform: translateY(-4px);
+            border-color: #6366f1;
+            box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.3);
+        }
+    </style>
+</head>
+<body class="min-h-screen selection:bg-indigo-500 selection:text-white overflow-x-hidden">
+
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-brand-dark/80 backdrop-blur-md border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-cyan-400 flex items-center justify-center shadow-lg">
+                        <i class="fa-solid fa-brain text-white text-lg"></i>
+                    </div>
+                    <span class="text-xl font-bold tracking-wider bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">AI Learning Hub</span>
+                </div>
+                
+                <!-- Desktop Nav Links -->
+                <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+                    <a href="#why-learn" class="text-gray-300 hover:text-cyan-400 transition-colors">ทำไมต้องเรียน?</a>
+                    <a href="#roadmap" class="text-gray-300 hover:text-cyan-400 transition-colors">เส้นทางเรียนรู้</a>
+                    <a href="#ai-tools" class="text-gray-300 hover:text-cyan-400 transition-colors">สารบัญ AI</a>
+                    <a href="#assessment" class="text-gray-300 hover:text-cyan-400 transition-colors">แบบวัดสายงาน</a>
+                    <a href="#favorites" class="relative text-gray-300 hover:text-cyan-400 transition-colors flex items-center gap-1">
+                        <span>รายการโปรด</span>
+                        <span id="fav-count" class="bg-indigo-500 text-white text-xs px-1.5 py-0.5 rounded-full hidden">0</span>
+                    </a>
+                </div>
+
+                <!-- Right Action Button -->
+                <div class="hidden md:block">
+                    <a href="#assessment" class="bg-gradient-to-r from-indigo-500 to-cyan-500 text-white px-5 py-2.5 rounded-xl font-semibold hover:opacity-90 transition-all text-sm shadow-md">
+                        <i class="fa-solid fa-graduation-cap mr-2"></i>เริ่มเรียนรู้เลย
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Toggle -->
+                <button onclick="toggleMobileMenu()" class="md:hidden text-gray-300 hover:text-white focus:outline-none">
+                    <i id="menu-icon" class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-brand-dark/95 border-b border-gray-800 px-4 py-4 space-y-3">
+            <a href="#why-learn" onclick="toggleMobileMenu()" class="block text-gray-300 hover:text-cyan-400 transition-colors py-2">ทำไมต้องเรียน?</a>
+            <a href="#roadmap" onclick="toggleMobileMenu()" class="block text-gray-300 hover:text-cyan-400 transition-colors py-2">เส้นทางเรียนรู้</a>
+            <a href="#ai-tools" onclick="toggleMobileMenu()" class="block text-gray-300 hover:text-cyan-400 transition-colors py-2">สารบัญ AI</a>
+            <a href="#assessment" onclick="toggleMobileMenu()" class="block text-gray-300 hover:text-cyan-400 transition-colors py-2">แบบวัดสายงาน</a>
+            <a href="#favorites" onclick="toggleMobileMenu()" class="block text-gray-300 hover:text-cyan-400 transition-colors py-2">รายการโปรด</a>
+            <a href="#assessment" onclick="toggleMobileMenu()" class="block w-full text-center bg-gradient-to-r from-indigo-500 to-cyan-500 text-white py-2.5 rounded-xl font-semibold">
+                เริ่มเรียนรู้เลย
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative pt-32 pb-24 md:pt-40 md:pb-36 overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <!-- Background Radial Glows -->
+            <div class="absolute top-1/4 left-1/4 w-[400px] h-[400px] rounded-full bg-indigo-900/20 blur-[100px]"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-cyan-900/20 blur-[120px]"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-950/80 border border-indigo-500/30 text-indigo-300 text-xs font-semibold tracking-wider uppercase mb-6">
+                <span class="w-2 h-2 rounded-full bg-indigo-400 animate-ping"></span>
+                The Future of Learning is Here
+            </span>
+            <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
+                ขับเคลื่อนอนาคตของคุณ<br>
+                <span class="bg-gradient-to-r from-indigo-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent">
+                    ด้วยพลังปัญญาประดิษฐ์ (AI)
+                </span>
+            </h1>
+            <p class="max-w-3xl mx-auto text-gray-400 text-base sm:text-lg mb-10 leading-relaxed">
+                เรียนรู้โครงสร้างพื้นฐาน ท่องไปในจักรวาลเครื่องมือ AI ที่มีความสามารถโดดเด่น คัดสรรเพื่อช่วยยกระดับการทำงานและการเรียนรู้ของคุณไปอีกขั้น!
+            </p>
+            
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#roadmap" class="w-full sm:w-auto px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-semibold transition-all shadow-lg flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-route"></i> แผนการเรียนรู้ (Roadmap)
+                </a>
+                <a href="#ai-tools" class="w-full sm:w-auto px-8 py-4 bg-gray-900 hover:bg-gray-800 text-white border border-gray-700 hover:border-gray-600 rounded-xl font-semibold transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-cube"></i> ค้นหาเครื่องมือ AI
+                </a>
+            </div>
+
+            <!-- Fast Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mt-20 border-t border-gray-800 pt-10">
+                <div class="p-4">
+                    <h3 class="text-3xl font-bold text-white mb-1">12+</h3>
+                    <p class="text-gray-500 text-sm">เครื่องมือ AI แนะนำ</p>
+                </div>
+                <div class="p-4">
+                    <h3 class="text-3xl font-bold text-cyan-400 mb-1">4 ขั้น</h3>
+                    <p class="text-gray-500 text-sm">เส้นทางเรียนรู้พื้นฐาน</p>
+                </div>
+                <div class="p-4">
+                    <h3 class="text-3xl font-bold text-violet-400 mb-1">100%</h3>
+                    <p class="text-gray-500 text-sm">คัดสรรข้อมูลภาษาไทย</p>
+                </div>
+                <div class="p-4">
+                    <h3 class="text-3xl font-bold text-emerald-400 mb-1">ฟรี</h3>
+                    <p class="text-gray-500 text-sm">แบบประเมินทักษะ</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Interactive AI Learning Roadmap Section -->
+    <section id="roadmap" class="py-20 border-t border-gray-900 bg-gray-950/40 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+                    เส้นทางก้าวสู่ผู้เชี่ยวชาญ AI
+                </h2>
+                <p class="text-gray-400">
+                    แผนผังการเรียนรู้ที่รวบรวมทักษะสำคัญที่จำเป็น จากพื้นฐานสู่ระดับประยุกต์ใช้เพื่อการทำงานจริง
+                </p>
+                
+                <!-- Roadmap Progress Bar -->
+                <div class="mt-8 bg-gray-900 rounded-xl p-4 border border-gray-800">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-sm font-medium text-indigo-400">ความก้าวหน้าการเรียนรู้ของคุณ:</span>
+                        <span id="roadmap-percentage" class="text-sm font-bold text-white">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-800 h-3 rounded-full overflow-hidden">
+                        <div id="roadmap-bar" class="bg-gradient-to-r from-indigo-500 to-cyan-400 h-full w-0 transition-all duration-500"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Roadmap Steps Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
+                <!-- Step 1 -->
+                <div class="relative bg-brand-card border border-gray-800 rounded-2xl p-6 hover-card">
+                    <div class="absolute -top-5 left-6 w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center font-bold text-lg text-white shadow-lg">1</div>
+                    <div class="mt-4">
+                        <span class="text-xs font-semibold text-indigo-400 uppercase tracking-widest">ระดับที่ 1</span>
+                        <h3 class="text-xl font-bold text-white mt-1 mb-3">Foundations (พื้นฐาน)</h3>
+                        <p class="text-gray-400 text-sm mb-4">เรียนรู้คณิตศาสตร์พื้นฐาน, สถิติ, และการเขียนโปรแกรมด้วยภาษา Python เบื้องต้น</p>
+                        <ul class="text-xs text-gray-500 space-y-2 mb-6">
+                            <li><i class="fa-regular fa-square mr-1 text-cyan-400"></i> Python สำหรับวิทยาศาสตร์ข้อมูล</li>
+                            <li><i class="fa-regular fa-square mr-1 text-cyan-400"></i> สถิติและพีชคณิตเชิงเส้น</li>
+                        </ul>
+                        <button onclick="toggleRoadmapStep(this, 25)" class="w-full py-2 bg-indigo-950 hover:bg-indigo-900 border border-indigo-800 text-indigo-300 rounded-lg text-xs font-semibold transition-all">
+                            <i class="fa-regular fa-circle-check mr-1.5"></i>ทำเครื่องหมายว่าเรียนแล้ว
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative bg-brand-card border border-gray-800 rounded-2xl p-6 hover-card">
+                    <div class="absolute -top-5 left-6 w-10 h-10 rounded-xl bg-cyan-600 flex items-center justify-center font-bold text-lg text-white shadow-lg">2</div>
+                    <div class="mt-4">
+                        <span class="text-xs font-semibold text-cyan-400 uppercase tracking-widest">ระดับที่ 2</span>
+                        <h3 class="text-xl font-bold text-white mt-1 mb-3">Machine Learning</h3>
+                        <p class="text-gray-400 text-sm mb-4">เข้าใจกลไกเบื้องหลังที่โปรแกรมใช้เรียนรู้ข้อมูล การสร้าง Model ทำนาย และการประเมินผล</p>
+                        <ul class="text-xs text-gray-500 space-y-2 mb-6">
+                            <li><i class="fa-regular fa-square mr-1 text-cyan-400"></i> Regression & Classification</li>
+                            <li><i class="fa-regular fa-square mr-1 text-cyan-400"></i> Library: Scikit-Learn</li>
+                        </ul>
+                        <button onclick="toggleRoadmapStep(this, 25)" class="w-full py-2 bg-cyan-950 hover:bg-cyan-900 border border-cyan-800 text-cyan-300 rounded-lg text-xs font-semibold transition-all">
+                            <i class="fa-regular fa-circle-check mr-1.5"></i>ทำเครื่องหมายว่าเรียนแล้ว
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative bg-brand-card border border-gray-800 rounded-2xl p-6 hover-card">
+                    <div class="absolute -top-5 left-6 w-10 h-10 rounded-xl bg-violet-600 flex items-center justify-center font-bold text-lg text-white shadow-lg">3</div>
+                    <div class="mt-4">
+                        <span class="text-xs font-semibold text-violet-400 uppercase tracking-widest">ระดับที่ 3</span>
+                        <h3 class="text-xl font-bold text-white mt-1 mb-3">Deep Learning & NLP</h3>
+                        <p class="text-gray-400 text-sm mb-4">ก้าวข้ามขีดจำกัดด้วยโครงข่ายประสาทเทียม การประมวลผลรูปภาพ และการเข้าใจภาษาธรรมชาติ</p>
+                        <ul class="text-xs text-gray-500 space-y-2 mb-6">
+                            <li><i class="fa-regular fa-square mr-1 text-cyan-400"></i> Neural Networks (PyTorch / TF)</li>
+                            <li><i class="fa-regular fa-square mr-1 text-cyan-400"></i> Computer Vision & NLP</li>
+                        </ul>
+                        <button onclick="toggleRoadmapStep(this, 25)" class="w-full py-2 bg-violet-950 hover:bg-violet-900 border border-violet-800 text-violet-300 rounded-lg text-xs font-semibold transition-all">
+                            <i class="fa-regular fa-circle-check mr-1.5"></i>ทำเครื่องหมายว่าเรียนแล้ว
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="relative bg-brand-card border border-gray-800 rounded-2xl p-6 hover-card">
+                    <div class="absolute -top-5 left-6 w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center font-bold text-lg text-white shadow-lg">4</div>
+                    <div class="mt-4">
+                        <span class="text-xs font-semibold text-emerald-400 uppercase tracking-widest">ระดับที่ 4</span>
+                        <h3 class="text-xl font-bold text-white mt-1 mb-3">Generative AI & LLMs</h3>
+                        <p class="text-gray-400 text-sm mb-4">การสร้างมูลค่าใหม่ผ่าน Generative AI การใช้งาน Prompt Engineering และพัฒนาแอปด้วย API</p>
+                        <ul class="text-xs text-gray-500 space-y-2 mb-6">
+                            <li><i class="fa-regular fa-square mr-1 text-cyan-400"></i> Prompt Engineering หลักสูตรขั้นสูง</li>
+                            <li><i class="fa-regular fa-square mr-1 text-cyan-400"></i> LangChain & AI Agent Solutions</li>
+                        </ul>
+                        <button onclick="toggleRoadmapStep(this, 25)" class="w-full py-2 bg-emerald-950 hover:bg-emerald-900 border border-emerald-800 text-emerald-300 rounded-lg text-xs font-semibold transition-all">
+                            <i class="fa-regular fa-circle-check mr-1.5"></i>ทำเครื่องหมายว่าเรียนแล้ว
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Tools Directory Section -->
+    <section id="ai-tools" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                <div>
+                    <h2 class="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent mb-3">
+                        สารบัญและเครื่องมือ AI ยอดนิยม
+                    </h2>
+                    <p class="text-gray-400">
+                        จัดกลุ่มเครื่องมืออันทรงพลังให้คุณเลือกสรรเพื่อประยุกต์ใช้ในการเรียนและการทำคอนเทนต์
+                    </p>
+                </div>
+                
+                <!-- Search & Filter Controls -->
+                <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                    <!-- Search Input -->
+                    <div class="relative flex-1 sm:w-64">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-500">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </span>
+                        <input type="text" id="tool-search" oninput="filterTools()" placeholder="ค้นชื่อ AI หรือคีย์เวิร์ด..." 
+                            class="w-full bg-brand-card text-white text-sm rounded-xl pl-10 pr-4 py-3 border border-gray-800 focus:outline-none focus:border-indigo-500 transition-all">
+                    </div>
+                    <!-- Filter Select -->
+                    <select id="tool-filter" onchange="filterTools()" class="bg-brand-card text-white text-sm rounded-xl px-4 py-3 border border-gray-800 focus:outline-none focus:border-indigo-500 transition-all cursor-pointer">
+                        <option value="all">ทุกหมวดหมู่</option>
+                        <option value="text">เขียนบทความ / แชทบอท</option>
+                        <option value="coding">เขียนโปรแกรม (Coding)</option>
+                        <option value="image">สร้างสรรค์ภาพ / มีเดีย</option>
+                        <option value="productivity">เพิ่มประสิทธิภาพงาน (Productivity)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Favorite list alert (hidden by default) -->
+            <div id="favorites-section" class="hidden mb-10 bg-indigo-950/40 border border-indigo-500/30 rounded-2xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-star text-amber-400"></i> รายการโปรดของคุณ
+                    </h3>
+                    <button onclick="clearAllFavorites()" class="text-xs text-red-400 hover:text-red-300 transition-colors">ล้างทั้งหมด</button>
+                </div>
+                <div id="favorites-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <!-- Fav cards inject here -->
+                </div>
+            </div>
+
+            <!-- Main AI Tools Grid -->
+            <div id="tools-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Tool 1: ChatGPT -->
+                <div class="tool-item bg-brand-card border border-gray-800 rounded-2xl overflow-hidden hover-card flex flex-col justify-between" data-category="text" data-name="chatgpt openai แชท">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-indigo-950 text-indigo-400 border border-indigo-500/30">
+                                <i class="fa-regular fa-comment-dots mr-1"></i> Text & Chatbot
+                            </span>
+                            <button onclick="toggleFavorite('ChatGPT')" id="fav-ChatGPT" class="text-gray-500 hover:text-amber-400 transition-all text-lg">
+                                <i class="fa-regular fa-star"></i>
+                            </button>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">ChatGPT</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                            โมเดลภาษาปัญญาประดิษฐ์อเนกประสงค์สุดฮิตจาก OpenAI ที่ตอบคำถาม วางแผนงาน เขียนโปรแกรม และเขียนเนื้อหาได้อย่างลึกซึ้งและแม่นยำ
+                        </p>
+                    </div>
+                    <div class="px-6 py-4 bg-gray-900/60 border-t border-gray-800 flex items-center justify-between">
+                        <span class="text-xs text-gray-500">ผู้พัฒนา: OpenAI</span>
+                        <a href="https://chatgpt.com" target="_blank" class="text-xs font-bold text-cyan-400 hover:text-cyan-300 transition-colors">
+                            ทดลองใช้ฟรี <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Tool 2: Gemini -->
+                <div class="tool-item bg-brand-card border border-gray-800 rounded-2xl overflow-hidden hover-card flex flex-col justify-between" data-category="text" data-name="gemini google กูเกิล">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-indigo-950 text-indigo-400 border border-indigo-500/30">
+                                <i class="fa-regular fa-comment-dots mr-1"></i> Text & Chatbot
+                            </span>
+                            <button onclick="toggleFavorite('Gemini')" id="fav-Gemini" class="text-gray-500 hover:text-amber-400 transition-all text-lg">
+                                <i class="fa-regular fa-star"></i>
+                            </button>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Google Gemini</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                            ปัญญาประดิษฐ์สไตล์ Multimodal จากค่าย Google สามารถประมวลผลข้อมูลร่วมกันได้ดีทั้ง ภาพ ข้อความ และเสียง พร้อมการเข้าถึงฐานข้อมูลแบบ Real-time
+                        </p>
+                    </div>
+                    <div class="px-6 py-4 bg-gray-900/60 border-t border-gray-800 flex items-center justify-between">
+                        <span class="text-xs text-gray-500">ผู้พัฒนา: Google</span>
+                        <a href="https://gemini.google.com" target="_blank" class="text-xs font-bold text-cyan-400 hover:text-cyan-300 transition-colors">
+                            ทดลองใช้ฟรี <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Tool 3: Claude -->
+                <div class="tool-item bg-brand-card border border-gray-800 rounded-2xl overflow-hidden hover-card flex flex-col justify-between" data-category="text" data-name="claude anthropic คลอดด์">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-indigo-950 text-indigo-400 border border-indigo-500/30">
+                                <i class="fa-regular fa-comment-dots mr-1"></i> Text & Chatbot
+                            </span>
+                            <button onclick="toggleFavorite('Claude')" id="fav-Claude" class="text-gray-500 hover:text-amber-400 transition-all text-lg">
+                                <i class="fa-regular fa-star"></i>
+                            </button>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Claude</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                            เด่นเรื่องทักษะการแปลวิเคราะห์เชิงลึก สรุปเนื้อหาชุดความรู้ที่มีความยาว และความสุภาพในการตอบคำถาม มีความลึกซึ้งทางการวิเคราะห์และเขียนข้อเขียนต่างๆ
+                        </p>
+                    </div>
+                    <div class="px-6 py-4 bg-gray-900/60 border-t border-gray-800 flex items-center justify-between">
+                        <span class="text-xs text-gray-500">ผู้พัฒนา: Anthropic</span>
+                        <a href="https://claude.ai" target="_blank" class="text-xs font-bold text-cyan-400 hover:text-cyan-300 transition-colors">
+                            ทดลองใช้ฟรี <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Tool 4: Cursor -->
+                <div class="tool-item bg-brand-card border border-gray-800 rounded-2xl overflow-hidden hover-card flex flex-col justify-between" data-category="coding" data-name="cursor code เขียนโค้ด">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-emerald-950 text-emerald-400 border border-emerald-500/30">
+                                <i class="fa-solid fa-code mr-1"></i> Coding
+                            </span>
+                            <button onclick="toggleFavorite('Cursor')" id="fav-Cursor" class="text-gray-500 hover:text-amber-400 transition-all text-lg">
+                                <i class="fa-regular fa-star"></i>
+                            </button>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Cursor</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                            เครื่องมือเขียนโค้ดสไตล์ VS Code ที่ฝังความสามารถ AI ไว้อย่างเต็มประสิทธิภาพ ช่วยเขียน แก้ไขบั๊ก และอธิบายโครงสร้างระบบให้เข้าใจง่ายดายในพริบตา
+                        </p>
+                    </div>
+                    <div class="px-6 py-4 bg-gray-900/60 border-t border-gray-800 flex items-center justify-between">
+                        <span class="text-xs text-gray-500">ผู้พัฒนา: Anysphere</span>
+                        <a href="https://www.cursor.com" target="_blank" class="text-xs font-bold text-cyan-400 hover:text-cyan-300 transition-colors">
+                            ดาวน์โหลดฟรี <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Tool 5: Midjourney -->
+                <div class="tool-item bg-brand-card border border-gray-800 rounded-2xl overflow-hidden hover-card flex flex-col justify-between" data-category="image" data-name="midjourney ภาพ วาดรูป">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-pink-950 text-pink-400 border border-pink-500/30">
+                                <i class="fa-regular fa-image mr-1"></i> Image Generation
+                            </span>
+                            <button onclick="toggleFavorite('Midjourney')" id="fav-Midjourney" class="text-gray-500 hover:text-amber-400 transition-all text-lg">
+                                <i class="fa-regular fa-star"></i>
+                            </button>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Midjourney</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                            สุดยอด AI ในการสร้างสรรค์ผลงานภาพถ่าย แฟนตาซี ศิลปะ และโมเดล 3D ที่ได้ผลลัพธ์ภาพคุณภาพสูง และสวยงามสมจริงอย่างน่าประทับใจ
+                        </p>
+                    </div>
+                    <div class="px-6 py-4 bg-gray-900/60 border-t border-gray-800 flex items-center justify-between">
+                        <span class="text-xs text-gray-500">ผู้พัฒนา: Midjourney Inc.</span>
+                        <a href="https://www.midjourney.com" target="_blank" class="text-xs font-bold text-cyan-400 hover:text-cyan-300 transition-colors">
+                            ทดลองใช้งาน <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Tool 6: Gamma App -->
+                <div class="tool-item bg-brand-card border border-gray-800 rounded-2xl overflow-hidden hover-card flex flex-col justify-between" data-category="productivity" data-name="gamma สไลด์ ทำงาน พรีเซน">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-cyan-950 text-cyan-400 border border-cyan-500/30">
+                                <i class="fa-solid fa-bolt mr-1"></i> Productivity
+                            </span>
+                            <button onclick="toggleFavorite('Gamma')" id="fav-Gamma" class="text-gray-500 hover:text-amber-400 transition-all text-lg">
+                                <i class="fa-regular fa-star"></i>
+                            </button>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Gamma App</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                            ช่วยย่นเวลาการเตรียมพรีเซนเตชัน เอกสาร หรือหน้าเว็บไซต์ด้วยการป้อนข้อความเพียงประโยคเดียว จากนั้น AI จะเนรมิตสไลด์สวยงามให้อัตโนมัติ
+                        </p>
+                    </div>
+                    <div class="px-6 py-4 bg-gray-900/60 border-t border-gray-800 flex items-center justify-between">
+                        <span class="text-xs text-gray-500">ผู้พัฒนา: Gamma Tech</span>
+                        <a href="https://gamma.app" target="_blank" class="text-xs font-bold text-cyan-400 hover:text-cyan-300 transition-colors">
+                            ทดลองใช้ฟรี <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- No Tools Found Message -->
+            <div id="no-tools-message" class="hidden text-center py-12">
+                <i class="fa-solid fa-magnifying-glass text-4xl text-gray-700 mb-4 block"></i>
+                <p class="text-gray-500">ไม่พบเครื่องมือ AI ที่ค้นหา ลองป้อนข้อความใหม่อีกครั้ง</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive AI Assessment Quiz Section -->
+    <section id="assessment" class="py-20 bg-gray-950/30 border-t border-b border-gray-900 relative">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent mb-3">
+                    คุณเหมาะกับสายงาน AI บทบาทใด?
+                </h2>
+                <p class="text-gray-400">
+                    ตอบคำถามสั้นๆ 4 ข้อ เพื่อค้นหาสายอาชีพและเครื่องมือ AI ที่สอดคล้องกับความชื่นชอบของตัวคุณ
+                </p>
+            </div>
+
+            <!-- Quiz Container Card -->
+            <div id="quiz-box" class="bg-brand-card border border-gray-800 rounded-2xl p-8 shadow-xl relative overflow-hidden">
+                <!-- Step Indicator -->
+                <div class="flex justify-between items-center mb-8 border-b border-gray-800 pb-4">
+                    <span id="quiz-step-title" class="text-sm text-indigo-400 font-semibold uppercase">คำถามข้อที่ 1 จาก 4</span>
+                    <div class="flex gap-1.5" id="step-dots">
+                        <div class="w-2 h-2 rounded-full bg-indigo-500"></div>
+                        <div class="w-2 h-2 rounded-full bg-gray-700"></div>
+                        <div class="w-2 h-2 rounded-full bg-gray-700"></div>
+                        <div class="w-2 h-2 rounded-full bg-gray-700"></div>
+                    </div>
+                </div>
+
+                <!-- Questions and Answers Container -->
+                <div id="quiz-content" class="transition-opacity duration-300">
+                    <h3 id="question-text" class="text-xl font-bold text-white mb-6">คุณตื่นเต้นกับงานสไตล์ไหนมากที่สุดเวลาเริ่มต้นโปรเจกต์ใหม่?</h3>
+                    <div class="space-y-4" id="options-container">
+                        <!-- Option Buttons dynamic render here -->
+                    </div>
+                </div>
+
+                <!-- Result screen (Hidden by Default) -->
+                <div id="quiz-result" class="hidden text-center py-4">
+                    <div class="w-16 h-16 bg-gradient-to-tr from-indigo-500 to-cyan-400 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                        <i id="result-icon" class="fa-solid fa-user-astronaut text-white text-2xl"></i>
+                    </div>
+                    <span class="text-xs font-semibold text-cyan-400 uppercase tracking-widest block mb-2">บทบาทสายงาน AI ของคุณคือ</span>
+                    <h3 id="result-title" class="text-2xl sm:text-3xl font-bold text-white mb-4">นักพัฒนาและเขียนโมเดล AI (AI Engineer)</h3>
+                    <p id="result-desc" class="text-gray-400 text-sm max-w-xl mx-auto leading-relaxed mb-8">
+                        คุณคือผู้ที่มีโครงสร้างทางความคิดอย่างเป็นระบบและหลงรักงานด้านโปรแกรมมิ่งอย่างแท้จริง เส้นทางการเรียนรู้ของคุณควรโฟกัสที่ Machine Learning และ Deep Learning
+                    </p>
+                    
+                    <div class="bg-gray-900/60 rounded-xl p-5 border border-gray-800 max-w-md mx-auto mb-8 text-left">
+                        <span class="text-xs font-semibold text-indigo-400 block mb-2 uppercase">เครื่องมือคู่ใจของคุณ:</span>
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-laptop-code text-cyan-400 text-lg"></i>
+                            <span id="result-tools" class="text-sm font-semibold text-white">Cursor Code Editor, GitHub Copilot, Hugging Face</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <button onclick="restartQuiz()" class="px-6 py-3 bg-gray-900 hover:bg-gray-800 border border-gray-700 text-white rounded-xl font-semibold transition-all text-sm w-full sm:w-auto">
+                            <i class="fa-solid fa-arrow-rotate-left mr-2"></i> ทำแบบทดสอบใหม่
+                        </button>
+                        <a href="#roadmap" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-semibold transition-all text-sm w-full sm:w-auto">
+                            ไปดูแผนที่การเรียนรู้ <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recommended Learning Resource Hub Section -->
+    <section class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-xs font-semibold text-indigo-400 uppercase tracking-widest block mb-2">Recommended Courses</span>
+                <h2 class="text-3xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+                    แหล่งเรียนรู้ฟรีสำหรับการเรียน AI
+                </h2>
+                <p class="text-gray-400 max-w-2xl mx-auto mt-2">
+                    รวบรวมเว็บไซต์และคอร์สเรียนฟรีชั้นนำระดับสากล สำหรับเริ่มต้นเรียนรู้ด้วยตนเอง
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Course Card 1 -->
+                <div class="bg-brand-card border border-gray-800 rounded-2xl p-6 hover-card">
+                    <div class="text-cyan-400 text-3xl mb-4"><i class="fa-brands fa-google"></i></div>
+                    <h3 class="text-lg font-bold text-white mb-2">Google AI Essentials</h3>
+                    <p class="text-gray-400 text-sm mb-6">เรียนรู้การเพิ่มผลผลิตและใช้งาน Generative AI จากทีมวิศวกรของกูเกิลโดยตรง เหมาะสำหรับผู้เริ่มตั้งแต่ศูนย์</p>
+                    <a href="https://grow.google/ai-essentials/" target="_blank" class="text-xs font-bold text-indigo-400 hover:text-indigo-300 flex items-center gap-1.5 transition-colors">
+                        เข้าเรียนฟรีจาก Google <i class="fa-solid fa-up-right-from-square"></i>
+                    </a>
+                </div>
+
+                <!-- Course Card 2 -->
+                <div class="bg-brand-card border border-gray-800 rounded-2xl p-6 hover-card">
+                    <div class="text-indigo-400 text-3xl mb-4"><i class="fa-solid fa-brain"></i></div>
+                    <h3 class="text-lg font-bold text-white mb-2">AI for Everyone (Andrew Ng)</h3>
+                    <p class="text-gray-400 text-sm mb-6">คอร์สปูพื้นฐานอภิมหาศาลยอดนิยมสูงสุดระดับโลกที่จะช่วยสอนแนวความคิด วิธีการ และข้อพิจารณาทางธุรกิจจากปรมาจารย์ Andrew Ng</p>
+                    <a href="https://www.coursera.org/learn/ai-for-everyone" target="_blank" class="text-xs font-bold text-indigo-400 hover:text-indigo-300 flex items-center gap-1.5 transition-colors">
+                        เข้าเรียนฟรีบน Coursera <i class="fa-solid fa-up-right-from-square"></i>
+                    </a>
+                </div>
+
+                <!-- Course Card 3 -->
+                <div class="bg-brand-card border border-gray-800 rounded-2xl p-6 hover-card">
+                    <div class="text-emerald-400 text-3xl mb-4"><i class="fa-solid fa-graduation-cap"></i></div>
+                    <h3 class="text-lg font-bold text-white mb-2">Elements of AI</h3>
+                    <p class="text-gray-400 text-sm mb-6">หนึ่งในคอร์สเรียน AI เบื้องต้นที่ดีที่สุดในยุโรป ออกแบบโดย University of Helsinki อัดแน่นหัวข้อตรรกะแบบเข้าใจง่ายสุดๆ</p>
+                    <a href="https://www.elementsofai.com/" target="_blank" class="text-xs font-bold text-indigo-400 hover:text-indigo-300 flex items-center gap-1.5 transition-colors">
+                        เข้าเรียนทาง Elements of AI <i class="fa-solid fa-up-right-from-square"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Premium Footer Section -->
+    <footer class="bg-gray-950 border-t border-gray-900 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6 border-b border-gray-800 pb-8 mb-8">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-500 to-cyan-400 flex items-center justify-center">
+                        <i class="fa-solid fa-brain text-white text-sm"></i>
+                    </div>
+                    <span class="text-lg font-bold tracking-wider text-white">AI Learning Hub</span>
+                </div>
+                <p class="text-sm text-gray-500">
+                    ร่วมก้าวไปข้างหน้า ค้นคว้า แลกเปลี่ยน และพัฒนาโลกเทคโนโลยีปัญญาประดิษฐ์ให้เกิดประโยชน์ต่อส่วนรวม
+                </p>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-600">
+                <p>&copy; 2026 AI Learning Hub. สหวิทยาการแห่งปัญญาประดิษฐ์เพื่อการทำงานแห่งอนาคต</p>
+                <div class="flex gap-6">
+                    <a href="#" class="hover:text-gray-400 transition-colors">นโยบายความเป็นส่วนตัว</a>
+                    <a href="#" class="hover:text-gray-400 transition-colors">ข้อตกลงการใช้งาน</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Core Application Logic -->
+    <script>
+        // App State
+        let state = {
+            completedRoadmapSteps: 0,
+            favorites: [],
+            totalRoadmapSteps: 4
+        };
+
+        // Initialize state on page load
+        window.addEventListener('load', () => {
+            loadState();
+            updateRoadmapUI();
+            updateFavoriteCount();
+            renderFavoritesGrid();
+        });
+
+        // Load state from LocalStorage
+        function loadState() {
+            const savedFavorites = localStorage.getItem('ai_learning_hub_favorites');
+            if (savedFavorites) {
+                state.favorites = JSON.parse(savedFavorites);
+            }
+            const savedCompletedSteps = localStorage.getItem('ai_learning_hub_roadmap');
+            if (savedCompletedSteps) {
+                state.completedRoadmapSteps = parseInt(savedCompletedSteps);
+            }
+        }
+
+        // Toggle Mobile Navigation Menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                icon.className = "fa-solid fa-xmark text-xl";
+            } else {
+                menu.classList.add('hidden');
+                icon.className = "fa-solid fa-bars text-xl";
+            }
+        }
+
+        // Bookmark and Favorite Functionality
+        function toggleFavorite(toolName) {
+            const index = state.favorites.indexOf(toolName);
+            const button = document.getElementById(`fav-${toolName}`);
+            
+            if (index > -1) {
+                // Remove from favorites
+                state.favorites.splice(index, 1);
+                if (button) {
+                    button.innerHTML = '<i class="fa-regular fa-star"></i>';
+                    button.className = "text-gray-500 hover:text-amber-400 transition-all text-lg";
+                }
+                showCustomToast(`ลบ ${toolName} ออกจากรายการโปรดแล้ว`);
+            } else {
+                // Add to favorites
+                state.favorites.push(toolName);
+                if (button) {
+                    button.innerHTML = '<i class="fa-solid fa-star text-amber-400"></i>';
+                    button.className = "text-amber-400 hover:text-amber-500 transition-all text-lg";
+                }
+                showCustomToast(`เพิ่ม ${toolName} ลงในรายการโปรดเรียบร้อย!`);
+            }
+            
+            localStorage.setItem('ai_learning_hub_favorites', JSON.stringify(state.favorites));
+            updateFavoriteCount();
+            renderFavoritesGrid();
+        }
+
+        function clearAllFavorites() {
+            // Revert all stars
+            state.favorites.forEach(tool => {
+                const btn = document.getElementById(`fav-${tool}`);
+                if (btn) {
+                    btn.innerHTML = '<i class="fa-regular fa-star"></i>';
+                    btn.className = "text-gray-500 hover:text-amber-400 transition-all text-lg";
+                }
+            });
+            state.favorites = [];
+            localStorage.setItem('ai_learning_hub_favorites', JSON.stringify(state.favorites));
+            updateFavoriteCount();
+            renderFavoritesGrid();
+            showCustomToast('ล้างรายการโปรดทั้งหมดเรียบร้อยแล้ว');
+        }
+
+        function updateFavoriteCount() {
+            const countBadge = document.getElementById('fav-count');
+            if (state.favorites.length > 0) {
+                countBadge.textContent = state.favorites.length;
+                countBadge.classList.remove('hidden');
+            } else {
+                countBadge.classList.add('hidden');
+            }
+        }
+
+        // Render favorites grid dynamically
+        function renderFavoritesGrid() {
+            const section = document.getElementById('favorites-section');
+            const grid = document.getElementById('favorites-grid');
+            
+            if (state.favorites.length === 0) {
+                section.classList.add('hidden');
+                return;
+            }
+            
+            section.classList.remove('hidden');
+            grid.innerHTML = '';
+            
+            state.favorites.forEach(tool => {
+                const card = document.createElement('div');
+                card.className = "bg-gray-900 border border-gray-800 rounded-xl p-4 flex items-center justify-between";
+                card.innerHTML = `
+                    <div>
+                        <h4 class="font-bold text-white text-sm">${tool}</h4>
+                        <p class="text-xs text-gray-400">บันทึกไว้ในสลัดส่วนตัว</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="toggleFavorite('${tool}')" class="text-red-400 hover:text-red-300 p-1.5 transition-colors text-xs">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Toast Notifications
+        function showCustomToast(message) {
+            // Remove existing toasts first
+            const existing = document.getElementById('custom-toast');
+            if (existing) existing.remove();
+            
+            const toast = document.createElement('div');
+            toast.id = 'custom-toast';
+            toast.className = "fixed bottom-5 right-5 bg-brand-card border border-indigo-500 text-white text-sm px-5 py-3 rounded-xl shadow-2xl z-50 flex items-center gap-2 animate-bounce";
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-indigo-400"></i> <span>${message}</span>`;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+                setTimeout(() => toast.remove(), 500);
+            }, 3000);
+        }
+
+        // Quiz System Definitions & Questions
+        const quizQuestions = [
+            {
+                question: "1. งานสไตล์ไหนที่คุณมีแนวโน้มรู้สึกตื่นเต้นที่จะลองทำมากที่สุด?",
+                options: [
+                    { text: "ก. เขียนโค้ดโปรแกรมเพื่อทดสอบประสิทธิภาพโมเดลคณิตศาสตร์", weight: { developer: 3, Prompt: 0, creator: 0 } },
+                    { text: "ข. ตกแต่ง ออกแบบ เขียนชุดข้อความเพื่อให้ปัญญาประดิษฐ์วาดรูป", weight: { developer: 0, Prompt: 1, creator: 3 } },
+                    { text: "ค. สั่งงานแชทบอทช่วยเขียนบทความและหาแนวคิดวิเคราะห์ไอเดียใหม่ๆ", weight: { developer: 0, Prompt: 3, creator: 1 } },
+                    { text: "ง. นำเทคโนโลยี AI หลายตัวมาประยุกต์จัดระเบียบงานในชีวิตประจำวัน", weight: { developer: 1, Prompt: 1, creator: 2 } }
+                ]
+            },
+            {
+                question: "2. ทักษะหลักที่คุณมีพื้นฐานหรืออยากฝึกฝนให้โดดเด่นอย่างมาก?",
+                options: [
+                    { text: "ก. การเขียนโค้ดและโครงสร้างภาษาคอมพิวเตอร์ (Python, SQL)", weight: { developer: 3, Prompt: 0, creator: 0 } },
+                    { text: "ข. ความเข้าใจสุนทรียภาพ ศิลปะ การวางภาพและองค์ประกอบสี", weight: { developer: 0, Prompt: 1, creator: 3 } },
+                    { text: "ค. ศิลปะการใช้คำ การต่อรอง ภาษาและการเขียนประโยคสื่อสารให้เข้าใจง่าย", weight: { developer: 1, Prompt: 3, creator: 0 } },
+                    { text: "ง. การวิเคราะห์กลยุทธ์และการเป็นผู้นำองค์กร", weight: { developer: 1, Prompt: 1, creator: 2 } }
+                ]
+            },
+            {
+                question: "3. ในโปรเจกต์กลุ่มวิชาการ คุณมักจะชอบรับบทบาทใดเป็นอันดับแรก?",
+                options: [
+                    { text: "ก. หน่วยเตรียมโครงสร้างและวิเคราะห์ข้อมูลที่ทุกคนเอาไปประยุกต์ต่อ", weight: { developer: 3, Prompt: 0, creator: 0 } },
+                    { text: "ข. หน่วยเรียบเรียงนำเสนอและวิเคราะห์ความต้องการให้เป็นรูปแบบสากล", weight: { developer: 1, Prompt: 3, creator: 0 } },
+                    { text: "ค. ฝ่ายออกแบบสไลด์ วิดีโอ และสร้างสื่อกราฟิกของโปรเจกต์", weight: { developer: 0, Prompt: 0, creator: 3 } },
+                    { text: "ง. ผู้ประสานงานนำ AI ต่างๆ มารวมร่างสรุปย่อให้อย่างรวดเร็ว", weight: { developer: 0, Prompt: 2, creator: 2 } }
+                ]
+            },
+            {
+                question: "4. วัตถุประสงค์สูงสุดในการใช้ AI ของคุณคืออะไร?",
+                options: [
+                    { text: "ก. พัฒนาระบบอัจฉริยะที่สามารถพยากรณ์และจัดการปัญหาซับซ้อนได้", weight: { developer: 3, Prompt: 0, creator: 0 } },
+                    { text: "ข. สั่งการปัญญาประดิษฐ์ให้ได้คำตอบที่ดีที่สุด คุ้มทุนสุด และมีประสิทธิผลล้ำเลิศ", weight: { developer: 1, Prompt: 3, creator: 1 } },
+                    { text: "ค. ผลิตผลงานสร้างสรรค์ รูปถ่าย หรืองานศิลปะในสไตล์เฉพาะตัวอย่างไม่มีจำกัด", weight: { developer: 0, Prompt: 1, creator: 3 } },
+                    { text: "ง. การใช้เครื่องมือหลายด้านเพื่อทำเงิน คอนเทนต์ และการทำงานแบบอัตโนมัติ", weight: { developer: 1, Prompt: 1, creator: 3 } }
+                ]
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let scoreTracker = { developer: 0, Prompt: 0, creator: 0 };
+
+        function loadQuestion() {
+            const currentQ = quizQuestions[currentQuestionIndex];
+            
+            // Set Step Header and Dots
+            document.getElementById('quiz-step-title').textContent = `คำถามข้อที่ ${currentQuestionIndex + 1} จาก ${quizQuestions.length}`;
+            const dots = document.getElementById('step-dots').children;
+            for(let i=0; i<dots.length; i++) {
+                dots[i].className = i <= currentQuestionIndex ? "w-2 h-2 rounded-full bg-indigo-500" : "w-2 h-2 rounded-full bg-gray-700";
+            }
+
+            // Set question text
+            document.getElementById('question-text').textContent = currentQ.question;
+            
+            // Set options
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            currentQ.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-xl bg-gray-900 border border-gray-800 hover:border-indigo-500/50 hover:bg-indigo-950/20 text-gray-300 hover:text-white transition-all duration-200 text-sm flex items-start gap-3";
+                btn.innerHTML = `<span class="bg-gray-800 text-gray-400 w-5 h-5 rounded flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">${idx+1}</span> <span>${opt.text}</span>`;
+                btn.onclick = () => selectOption(opt.weight);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectOption(weight) {
+            // Add scores
+            scoreTracker.developer += weight.developer;
+            scoreTracker.Prompt += weight.Prompt;
+            scoreTracker.creator += weight.creator;
+
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizQuestions.length) {
+                const content = document.getElementById('quiz-content');
+                content.classList.add('opacity-0');
+                setTimeout(() => {
+                    loadQuestion();
+                    content.classList.remove('opacity-0');
+                }, 200);
+            } else {
+                showQuizResult();
+            }
+        }
+
+        function showQuizResult() {
+            document.getElementById('quiz-content').classList.add('hidden');
+            const resultBox = document.getElementById('quiz-result');
+            resultBox.classList.remove('hidden');
+            
+            // Determine result role based on scores
+            let roleTitle = "";
+            let roleDesc = "";
+            let roleTools = "";
+            let roleIconClass = "fa-solid fa-user-astronaut";
+
+            const { developer, Prompt, creator } = scoreTracker;
+
+            if (developer >= Prompt && developer >= creator) {
+                roleTitle = "วิศวกรปัญญาประดิษฐ์ (AI Engineer)";
+                roleDesc = "คุณมีความสนใจในการวิเคราะห์อย่างเป็นวิทยาศาสตร์และกระบวนการทำงานที่เป็นระบบ เหมาะสำหรับการเขียนโค้ดและพัฒนาประยุกต์โมเดล AI ในระดับลึกเพื่อแก้โจทย์ซับซ้อน";
+                roleTools = "Cursor, Github Copilot, VS Code, Google Colab";
+                roleIconClass = "fa-solid fa-code-branch text-emerald-400";
+            } else if (Prompt >= developer && Prompt >= creator) {
+                roleTitle = "วิศวกรป้อนคำสั่ง (Prompt Specialist / Engineer)";
+                roleDesc = "คุณโดดเด่นมากในทักษะสื่อสาร ภาษา และความพยายามที่จะหาวิธีสื่อสารที่ดีที่สุด สามารถเข้าสังคม แก้ไขเนื้อหา ประหยัดเงิน และดึงขีดสุดของความอัจฉริยะออกมาประยุกต์ใช้";
+                roleTools = "ChatGPT, Google Gemini, Claude, Claude Projects";
+                roleIconClass = "fa-solid fa-keyboard text-cyan-400";
+            } else {
+                roleTitle = "ผู้ผลิตเนื้อหาเทคโนโลยี (AI Content Creator & Artist)";
+                roleDesc = "คุณคือศิลปินและนักการตลาดอเนกประสงค์แห่งยุคอนาคต หลงใหลรูปภาพ ความสวยงาม แบรนดิ้ง และการเชื่อมสิ่งต่างๆ มาเป็นภาพเคลื่อนไหวอันมีเสน่ห์";
+                roleTools = "Midjourney, Stable Diffusion, Runway Gen-2, Gamma App";
+                roleIconClass = "fa-solid fa-wand-magic-sparkles text-pink-400";
+            }
+
+            document.getElementById('result-title').textContent = roleTitle;
+            document.getElementById('result-desc').textContent = roleDesc;
+            document.getElementById('result-tools').textContent = roleTools;
+            document.getElementById('result-icon').className = roleIconClass + " text-2xl text-white";
+        }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            scoreTracker = { developer: 0, Prompt: 0, creator: 0 };
+            document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('quiz-content').classList.remove('hidden');
+            loadQuestion();
+        }
+
+        // Run Quiz Initialization
+        loadQuestion();
+
+        // Tool Filtering Logic
+        function filterTools() {
+            const searchVal = document.getElementById('tool-search').value.toLowerCase().trim();
+            const filterVal = document.getElementById('tool-filter').value;
+            const tools = document.getElementsByClassName('tool-item');
+            let foundCount = 0;
+
+            for (let i = 0; i < tools.length; i++) {
+                const item = tools[i];
+                const cat = item.getAttribute('data-category');
+                const nameAndTags = item.getAttribute('data-name').toLowerCase();
+                
+                const matchesSearch = nameAndTags.includes(searchVal);
+                const matchesFilter = filterVal === 'all' || cat === filterVal;
+
+                if (matchesSearch && matchesFilter) {
+                    item.classList.remove('hidden');
+                    foundCount++;
+                } else {
+                    item.classList.add('hidden');
+                }
+            }
+
+            const noToolsMsg = document.getElementById('no-tools-message');
+            if (foundCount === 0) {
+                noToolsMsg.classList.remove('hidden');
+            } else {
+                noToolsMsg.classList.add('hidden');
+            }
+        }
+
+        // Roadmap State Tracker
+        function toggleRoadmapStep(button, percentage) {
+            const icon = button.querySelector('i');
+            const isCompleted = button.classList.contains('step-completed');
+            
+            if (!isCompleted) {
+                button.classList.add('step-completed', 'bg-emerald-950', 'text-emerald-300', 'border-emerald-800');
+                button.innerHTML = '<i class="fa-solid fa-circle-check mr-1.5"></i>เรียนรู้เรียบร้อยแล้ว!';
+                state.completedRoadmapSteps += 1;
+            } else {
+                button.classList.remove('step-completed', 'bg-emerald-950', 'text-emerald-300', 'border-emerald-800');
+                button.innerHTML = '<i class="fa-regular fa-circle-check mr-1.5"></i>ทำเครื่องหมายว่าเรียนแล้ว';
+                state.completedRoadmapSteps = Math.max(0, state.completedRoadmapSteps - 1);
+            }
+            
+            localStorage.setItem('ai_learning_hub_roadmap', state.completedRoadmapSteps);
+            updateRoadmapUI();
+        }
+
+        function updateRoadmapUI() {
+            const percentageText = document.getElementById('roadmap-percentage');
+            const progressBar = document.getElementById('roadmap-bar');
+            
+            const calcPercent = (state.completedRoadmapSteps / state.totalRoadmapSteps) * 100;
+            percentageText.textContent = `${Math.min(100, Math.round(calcPercent))}%`;
+            progressBar.style.width = `${Math.min(100, calcPercent)}%`;
+        }
+    </script>
+</body>
+</html>
